@@ -1,0 +1,186 @@
+/* Fade In */
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide Up */
+.slide-up {
+  animation: slideUp 0.5s ease forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide Down */
+.slide-down {
+  animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Zoom In */
+.zoom-in {
+  animation: zoomIn 0.35s ease forwards;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Bounce */
+.bounce {
+  animation: bounce 0.7s ease;
+}
+
+@keyframes bounce {
+  0%,100%{
+    transform:translateY(0);
+  }
+  30%{
+    transform:translateY(-15px);
+  }
+  60%{
+    transform:translateY(5px);
+  }
+}
+
+/* Pulse */
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.05);
+  }
+  100%{
+    transform:scale(1);
+  }
+}
+
+/* Shake */
+.shake {
+  animation: shake .5s;
+}
+
+@keyframes shake {
+  0%,100%{
+    transform:translateX(0);
+  }
+  20%{
+    transform:translateX(-8px);
+  }
+  40%{
+    transform:translateX(8px);
+  }
+  60%{
+    transform:translateX(-5px);
+  }
+  80%{
+    transform:translateX(5px);
+  }
+}
+
+/* Floating */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+/* Rotate */
+.rotate {
+  animation: rotate 1.2s linear infinite;
+}
+
+@keyframes rotate {
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* Hover Lift */
+.hover-lift{
+  transition:.3s;
+}
+
+.hover-lift:hover{
+  transform:translateY(-8px);
+  box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+/* Hover Scale */
+.hover-scale{
+  transition:.3s;
+}
+
+.hover-scale:hover{
+  transform:scale(1.05);
+}
+
+/* Button Press */
+.btn-press{
+  transition:.2s;
+}
+
+.btn-press:active{
+  transform:scale(.95);
+}
+
+/* Smooth Appear */
+.appear{
+  opacity:0;
+  animation:appear .8s forwards;
+}
+
+@keyframes appear{
+  to{
+    opacity:1;
+  }
+}
