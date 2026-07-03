@@ -11,6 +11,19 @@
     opacity: 1;
   }
 }
+/* Fade In */
+.fade-out {
+  animation: fadeOut 0.4s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 /* Slide Up */
 .slide-up {

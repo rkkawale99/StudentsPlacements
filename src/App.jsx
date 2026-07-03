@@ -2,9 +2,10 @@ import React from 'react'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './Components/Authorization/Login'
-import Signup from './Components/Authorization/Signup'
+
 import Start from './Components/Start'
-import "./custom-bootstrap.scss";
+import StudentSignup from './Components/Authorization/StudentSignup'
+
 
 
 
@@ -15,7 +16,7 @@ const App = () => {
         <Routes>
           <Route element = {<Start/>} path='/'></Route>
           <Route element = {<Login/>} path='/login'></Route>
-          <Route element = {<Signup/>} path='/signup'></Route>
+          <Route element = {<StudentSignup/>} path='/signup'></Route>
         </Routes>
       </Router>
     </div>

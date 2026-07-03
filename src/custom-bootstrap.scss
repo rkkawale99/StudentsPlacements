@@ -1,3 +1,32 @@
-$primary: #6f42c1;
+// Main Colors
+// Brand Colors
+$primary: #8B5CF6;      // Violet
+$secondary: #334155;    // Slate
+$success: #22C55E;
+$info: #06B6D4;
+$warning: #F59E0B;
+$danger: #EF4444;
 
-@import "bootstrap/scss/bootstrap";
+// Backgrounds
+$body-bg: #020617;
+$body-color: #F8FAFC;    // Very Dark Background
+$surface: #0F172A;      // Cards/Navbar
+$surface-light: #1E293B;
+
+// Text
+$text-primary: #F8FAFC;
+$text-secondary: #CBD5E1;
+$text-muted: #94A3B8;
+
+// Borders
+$border-color: #334155;
+
+// Hover States
+$primary-hover: #1D4ED8;
+$accent-hover: #7C3AED;
+
+// Optional Extras
+$white: #FFFFFF;
+$black: #000000;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
