@@ -1,22 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { validateEmail, validatePassword } from "../../utils/Authentication";
+import Top from "../Popups/Top";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
+   const [errors, setErrors] = useState({});
+    const [show, setShow] = useState(false)
+    const [shake, setshake] = useState(false)
+    const navigate = useNavigate()
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value,
+      [name]: value,
+    });
+    setshake(false);
+     setErrors((prev) => {
+      const newErrors = { ...prev };
+      switch (name) {
+        case "email":
+          if (!validateEmail(value))
+            newErrors.email = "Enter a valid email address.";
+          else
+            delete newErrors.email;
+          break;
+        case "password":
+          if (!validatePassword(value))
+            newErrors.password =
+              "Password must be at least 8 characters and include uppercase, lowercase, number and special character.";
+          else
+            delete newErrors.password;
+          break;
+           
+      }
+      return newErrors;
     });
   };
 
+  useEffect(() => {
+    if(show === false && credentials.email !== ""){
+      // login logic *****
+      navigate("/")
+    }
+  }, [show])
+  
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();    
+    if(Object.keys(errors).length === 0){
+      console.log("login");
+      setShow(true)
+      return
+    }
+    setshake(true)
+
+    
     console.log(credentials);
   };
 
@@ -28,9 +72,11 @@ const Login = () => {
 
             <div className="card bg-secondary border-0 shadow-lg rounded-4">
               <div className="card-body p-5">
+                <Top show={show} setShow={setShow} title={"Welcome Back"} msg={"Explore The placement portal"}/>
 
                 <div className="text-center mb-4">
                   <div
+    
                     className="rounded-circle bg-primary bg-opacity-25 d-inline-flex justify-content-center align-items-center mb-3"
                     style={{ width: 70, height: 70 }}
                   >
@@ -58,18 +104,17 @@ const Login = () => {
                       <span className="input-group-text bg-dark text-light border-secondary">
                         <i className="bi bi-person"></i>
                       </span>
-
+                    
                       <input
                         type="text"
-                        className="form-control bg-dark text-light border-secondary"
+                       className={`form-control bg-dark text-light border-secondary ${errors.email ? "is-invalid" : ""} ${shake && errors.email ? "shake" : ""}`}
                         placeholder="Enter username"
-                        name="username"
-                        value={credentials.username}
+                        name="email"
+                        value={credentials.email}
                         onChange={handleChange}
                         required
                       />
-
-                    </div>
+                     <div className="invalid-feedback">{errors.email}</div></div>
                   </div>
 
                   <div className="mb-4">
@@ -91,7 +136,7 @@ const Login = () => {
 
                       <input
                         type={showPassword ? "text" : "password"}
-                        className="form-control bg-dark text-light border-secondary"
+                        className={`form-control bg-dark text-light border-secondary ${errors.password ? "is-invalid" : ""} ${shake && errors.password ? "shake" : ""}`}
                         placeholder="Enter password"
                         name="password"
                         value={credentials.password}
@@ -116,11 +161,16 @@ const Login = () => {
                       </button>
 
                     </div>
+                    {errors.password && (
+                        <div className="text-danger small mt-1">
+                          {errors.password}
+                        </div>
+                      )}
 
                   </div>
 
                   <button
-                    className="btn btn-primary w-100 py-2 fw-semibold"
+                    className="btn btn-primary w-100 py-2 fw-semibold btn-press"
                     type="submit"
                   >
                     Sign In
@@ -131,7 +181,7 @@ const Login = () => {
                       Don't have an account?
                     </span>{" "}
                     <a
-                      href="/signup"
+                      href="/role"
                       className="text-primary text-decoration-none fw-semibold"
                     >
                       Register

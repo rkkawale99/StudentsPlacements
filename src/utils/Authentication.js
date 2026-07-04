@@ -55,3 +55,5 @@ export const validateWebsite = (url) => {
 
   return regex.test(url.trim());
 };
+
+export const confirmPassword = (pass, pass1)=> pass === pass1;

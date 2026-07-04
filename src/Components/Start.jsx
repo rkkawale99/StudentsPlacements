@@ -194,7 +194,7 @@ const Start = () => {
           <h2 className="display-6 fw-bold text-light mb-3">Ready to Start Your Career?</h2>
           <p className="text-light text-opacity-75 max-w-md mx-auto mb-4">Register your system account today and start tracking active openings instantly.</p>
           <button className="btn btn-light btn-lg text-dark fw-bold px-5 py-3 rounded-pill shadow-sm" onClick={()=>{
-            navigate("/signup");}}>Register Now</button>
+            navigate("/role");}}>Register Now</button>
         </div>
       </section>
 
