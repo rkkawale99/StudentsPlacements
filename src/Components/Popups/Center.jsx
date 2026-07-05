@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Center = ({ show, setShow }) => {
+const Center = ({ show, setShow, title, msg}) => {
   const [closing, setClosing] = useState(false);
 
   const handleClose = () => {
@@ -16,11 +16,12 @@ const Center = ({ show, setShow }) => {
   return (
    <div>
     {show &&  <div
-      className={`position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50 ${closing ? "fade-out" : 'slide-up'}`}
+      className={`position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50 ${closing ? "fade-out" : 'slide-up'}`} 
+      style={{zIndex : 100}}
     >
       <div className={`modal-box bg-secondary p-4 rounded shadow`} style={{ minWidth: 400 }}>
-        <h4>Popup</h4>
-        <p>This popup is centered.</p>
+        <h4>{title}</h4>
+        <p>{msg}</p>
 
         <button className="btn btn-primary" onClick={handleClose}>
           Close

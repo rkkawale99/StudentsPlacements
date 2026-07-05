@@ -47,7 +47,7 @@ const Login = () => {
   useEffect(() => {
     if(show === false && credentials.email !== ""){
       // login logic *****
-      navigate("/")
+      navigate("/student/dashboard")
     }
   }, [show])
   
