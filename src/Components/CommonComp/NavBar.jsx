@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CompanyNavbar from "../CompanyModule/CompanyNavbar";
+import AdminNavbar from "../AdminModule/AdminNavbar";
 
 const Navbar = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
-    console.log(location.pathname);
+    let path = location.pathname.split("/")[1];
+    console.log(location.pathname.split("/"));
     
     const companies = [
         {
@@ -42,8 +44,8 @@ const Navbar = () => {
 
     let navbarContent;
 
-    switch (location.pathname) {
-        case "/":
+    switch (path) {
+        case "":
             navbarContent = (
                 <>
                     <ul className="navbar-nav ms-auto gap-3">
@@ -88,7 +90,7 @@ const Navbar = () => {
             );
             break;
 
-        case "/student/dashboard":
+        case "student":
             navbarContent = (
                 <>
                     <div className="position-relative mx-auto w-50">
@@ -188,9 +190,14 @@ const Navbar = () => {
                 </>
             );
             break;
-        case '/company/dashboard':
+        case 'company':
             navbarContent = (
                 <CompanyNavbar/>
+            )
+            break;
+        case 'admin':
+            navbarContent = (
+                <AdminNavbar/>
             )
             break;
 

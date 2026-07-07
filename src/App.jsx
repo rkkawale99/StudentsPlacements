@@ -20,6 +20,10 @@ import ApplicantManagement from './Components/CompanyModule/ApplicantManagement'
 import Shortlisting from './Components/CompanyModule/Shortlisting'
 import Interview from './Components/CompanyModule/Interview'
 import FinalResult from './Components/CompanyModule/FinalResult'
+import AdminDashboard from './Components/AdminModule/AdminDashboard'
+import StudentManagement from './Components/AdminModule/StudentManagement/StudentManagement'
+import CompanyManagement from './Components/AdminModule/CompanyManagement/CompanyManagement'
+import Reports from './Components/AdminModule/ReportsModule/Reports'
 
 
 
@@ -47,6 +51,10 @@ const App = () => {
           <Route element = {<Shortlisting/>} path='/company/shortlisting'></Route>
           <Route element = {<Interview/>} path='/company/interview'></Route>
           <Route element = {<FinalResult/>} path='/company/result'></Route>
+          <Route element = {<AdminDashboard/>} path='/admin/dashboard'></Route>
+          <Route element = {<StudentManagement/>} path='/admin/studentManagement'></Route>
+          <Route element = {<CompanyManagement/>} path='/admin/companyManagement'></Route>
+          <Route element = {<Reports/>} path='/admin/reports'></Route>
         </Routes>
       </Router>
     </div>

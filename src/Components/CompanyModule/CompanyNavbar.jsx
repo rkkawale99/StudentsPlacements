@@ -22,8 +22,8 @@ export default function CompanyNavbar({companyName="TechNova Pvt. Ltd."}){
             </button>
 
             <ul className="dropdown-menu dropdown-menu-end">
-              <li><button className="dropdown-item">Company Profile</button></li>
-              <li><button className="dropdown-item">Settings</button></li>
+              <li><button className="dropdown-item hover-color">Company Profile</button></li>
+              <li><button className="dropdown-item hover-color">Settings</button></li>
               <li><hr className="dropdown-divider"/></li>
               <li><button className="dropdown-item text-danger">Logout</button></li>
             </ul>

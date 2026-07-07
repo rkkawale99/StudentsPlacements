@@ -1,6 +1,5 @@
 import React from "react";
 import SelectStudents from "./SelectStudents";
-import UploadOfferLetter from "./UploadOfferLetter";
 import GenerateOfferLetter from "./GenerateOfferLetter";
 
 export default function FinalResult(){
