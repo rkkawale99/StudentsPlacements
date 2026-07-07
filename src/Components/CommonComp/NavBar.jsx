@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import CompanyNavbar from "../CompanyModule/CompanyNavbar";
 
 const Navbar = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
+    console.log(location.pathname);
+    
     const companies = [
         {
             id: 1,
@@ -184,6 +187,11 @@ const Navbar = () => {
                     </ul>
                 </>
             );
+            break;
+        case '/company/dashboard':
+            navbarContent = (
+                <CompanyNavbar/>
+            )
             break;
 
         default:

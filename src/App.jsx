@@ -13,7 +13,13 @@ import Dashboard from './Components/StudentModule/Dashboard'
 import Profile from './Components/StudentModule/Profile'
 import Applications from './Components/StudentModule/Applications'
 import CompanyList from './Components/StudentModule/CompanyList'
-
+import CompanyDashboard from './Components/CompanyModule/Dashboard'
+import CompanyProfile from './Components/CompanyModule/CompanyProfile'
+import CreateJob from './Components/CompanyModule/CreateJob'
+import ApplicantManagement from './Components/CompanyModule/ApplicantManagement'
+import Shortlisting from './Components/CompanyModule/Shortlisting'
+import Interview from './Components/CompanyModule/Interview'
+import FinalResult from './Components/CompanyModule/FinalResult'
 
 
 
@@ -34,6 +40,13 @@ const App = () => {
           <Route element = {<Profile/>} path='/student/profile'></Route>
           <Route element = {<Applications/>} path='/student/applications'></Route>
           <Route element = {<CompanyList/>} path='/student/companylist'></Route>
+          <Route element = {<CompanyDashboard/>} path='/company/dashboard'></Route>
+          <Route element = {<CompanyProfile/>} path='/company/profile'></Route>
+          <Route element = {<CreateJob/>} path='/company/createJob'></Route>
+          <Route element = {<ApplicantManagement/>} path='/company/applications'></Route>
+          <Route element = {<Shortlisting/>} path='/company/shortlisting'></Route>
+          <Route element = {<Interview/>} path='/company/interview'></Route>
+          <Route element = {<FinalResult/>} path='/company/result'></Route>
         </Routes>
       </Router>
     </div>
