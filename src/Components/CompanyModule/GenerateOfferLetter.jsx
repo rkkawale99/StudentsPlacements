@@ -1,102 +1,188 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
+import api from "../../utils/axios";
+import Spinner from "../CommonComp/Spinner";
+
 
 export default function GenerateOfferLetter() {
-  const [student, setStudent] = useState({
-    name: "Rushi Kawale",
-    email: "rushi@example.com",
-    position: "Software Engineer",
-    package: "8 LPA",
-    joiningDate: "2026-08-01",
-    location: "Pune"
-  });
+  const [results, setResults] = useState([]);
+  const [loading, setloading] = useState(false)
 
-  const handleChange = (e) => {
-    setStudent({ ...student, [e.target.name]: e.target.value });
+  useEffect(() => {
+    loadPlacementResults();
+  }, []);
+
+  const loadPlacementResults = async () => {
+    try {
+      setloading(true)
+      const res = await api.get("/placement-results");
+      setResults(res.data.data);
+       setloading(false)
+    } catch (err) {
+      console.error(err);
+       setloading(false)
+    }
+   
   };
 
-  const generatePDF = () => {
+  const generatePDF = (student, mode="") => {
+   
     const doc = new jsPDF();
 
-    doc.setFontSize(20);
-    doc.text("OFFER LETTER", 75, 20);
+    doc.setFontSize(22);
+    doc.text("OFFER LETTER", 70, 20);
 
     doc.setFontSize(12);
-    doc.text(`Dear ${student.name},`, 20, 40);
+
+    doc.text(`Dear ${student.studentName},`, 20, 40);
+
     doc.text(
-      `We are pleased to offer you the position of ${student.position}.`,
+      `Congratulations! We are pleased to offer you employment at ${student.companyName}.` ,
       20,
       55
     );
-    doc.text(`Package : ${student.package}`, 20, 70);
-    doc.text(`Location : ${student.location}`, 20, 82);
-    doc.text(`Joining Date : ${student.joiningDate}`, 20, 94);
-    doc.text("Congratulations! We look forward to working with you.",20,110);
 
-    doc.save(`${student.name}_OfferLetter.pdf`);
+    doc.text(`Company : ${student.companyName}`, 20, 75);
+    doc.text(`Salary : ${student.salary} LPA`, 20, 87);
+    doc.text(`Joining Date : ${student.joiningDate}`, 20, 99);
+    doc.text(`Job Role : ${student.jobRole}`, 20, 111);
+
+    doc.text(
+      "We welcome you to our organization and wish you a successful career.",
+      20,
+      132
+    );
+    if(mode === "email") return doc.output("blob");
+
+    doc.save(`${student.studentName}_OfferLetter.pdf`);
   };
 
-  const sendEmail = async () => {
-    try {
-      const res = await fetch("/api/company/offer/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(student)
+
+  const generateAll = () => {
+     setloading(true)
+    results.forEach(generatePDF);
+     setloading(false)
+  };
+
+  const sendAll = () => {
+    results.forEach(generatePdfAndSendEmail);
+  };
+
+
+const generatePdfAndSendEmail = async (student) => {
+  setloading(true)
+  try {
+    // Convert PDF to Blob
+    const pdfBlob = generatePDF(student, "email")
+
+    // Convert Blob to Base64
+    const reader = new FileReader();
+
+    reader.readAsDataURL(pdfBlob);
+
+    reader.onloadend = async () => {
+      const base64 = reader.result.split(",")[1];
+
+      await api.post("/placement-results/company/offer/send", {
+        applicationId: student.applicationId,
+        studentName: student.studentName,
+        companyName: student.companyName,
+        joiningDate: student.joiningDate,
+        salary: student.salary,
+        pdf: base64,
+        fileName: `${student.studentName}_OfferLetter.pdf`
       });
 
-      if (res.ok) {
-        alert("Offer letter generation request sent. Email will be delivered by the server.");
-      } else {
-        alert("Failed to send email.");
-      }
-    } catch (err) {
-      alert("Server error.");
-    }
-  };
+      alert("Offer Letter Sent Successfully");
+      setloading(false)
+    };
 
-  return (
-    <div className="container py-4">
-      <div className="card shadow border-0 rounded-4">
-        <div className="card-header bg-primary text-white">
-          <h3 className="mb-0">Generate Offer Letter</h3>
-        </div>
+  } catch (err) {
+    console.error(err);
+    alert("Failed to send email");
+    setloading(false)
+  }
+};
 
-        <div className="card-body">
-          <div className="row g-3">
-            {[
-              ["Student Name","name"],
-              ["Email","email"],
-              ["Position","position"],
-              ["Package","package"],
-              ["Joining Date","joiningDate"],
-              ["Location","location"]
-            ].map(([label,key])=>(
-              <div className="col-md-6" key={key}>
-                <label className="form-label">{label}</label>
-                <input
-                  className="form-control"
-                  name={key}
-                  value={student[key]}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
-          </div>
+  return  (
+    loading ? <Spinner/> :
+   ( <div className="container py-4">
 
-          <div className="d-flex gap-3 mt-4">
-            <button className="btn btn-success" onClick={generatePDF}>
-              Generate PDF
-            </button>
+      <div className="d-flex justify-content-between mb-4">
+        <h3>Offer Letters</h3>
 
-            <button className="btn btn-primary" onClick={sendEmail}>
-              Generate & Send Email
-            </button>
-          </div>
+        <div>
+          <button
+            className="btn btn-success me-2"
+            onClick={generateAll}
+          >
+            Generate All PDFs
+          </button>
+
+          <button
+            className="btn btn-primary"
+            onClick={sendAll}
+          >
+            Send Email To All          </button>
         </div>
       </div>
-    </div>
+
+      <div className="row">
+
+        {results.map((student) => (
+
+          <div className="col-md-4 mb-4 " key={student.id}>
+
+            <div className="card shadow-sm h-100 bg-secondary">
+
+              <div className="card-body">
+
+                <h5>{student.studentName}</h5>
+
+                <hr />
+
+                <p>
+                  <strong>Company :</strong> {student.companyName}
+                </p>
+
+                <p>
+                  <strong>Salary :</strong> {student.salary} LPA
+                </p>
+
+                <p>
+                  <strong>Joining :</strong> {student.joiningDate}
+                </p><p>
+                  <strong>Job Role :</strong> {student.jobRole}
+                </p>
+
+              </div>
+
+              <div className="card-footer">
+
+                <button
+                  className="btn btn-success w-100 mb-2"
+                  onClick={() => generatePDF(student)}
+                >
+                  Generate PDF
+                </button>
+
+                <button
+                  className="btn btn-primary w-100"
+                  onClick={() => generatePdfAndSendEmail(student)}
+                >
+                  Send Email
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>)
   );
 }

@@ -1,4 +1,143 @@
 :root {
-  --bs-primary: #335a07;
-  --bs-primary-rgb: 111, 66, 193;
+    --primary: #8B5CF6;
+    --secondary: #334155;
+    --success: #22C55E;
+    --info: #06B6D4;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+}
+
+/* Main Container */
+.skill-select {
+    font-size: 15px;
+}
+
+/* Control */
+.skill__control {
+    background: #0F172A !important;
+    border: 1px solid #334155 !important;
+    border-radius: 10px !important;
+    min-height: 48px !important;
+    transition: all 0.25s ease;
+    box-shadow: none !important;
+}
+
+.skill__control:hover {
+    border-color: #8B5CF6 !important;
+}
+
+.skill__control--is-focused {
+    border-color: #8B5CF6 !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, .25) !important;
+}
+
+/* Input Text */
+.skill__input-container {
+    color: #F8FAFC !important;
+}
+
+.skill__input-container input {
+    color: #F8FAFC !important;
+}
+
+/* Selected Value */
+.skill__single-value {
+    color: #F8FAFC !important;
+}
+
+/* Placeholder */
+.skill__placeholder {
+    color: #94A3B8 !important;
+}
+
+/* Dropdown */
+.skill__menu {
+    background: #0F172A !important;
+    border: 1px solid #334155;
+    border-radius: 10px !important;
+    overflow: hidden;
+    margin-top: 6px;
+    z-index: 9999;
+}
+
+/* Options */
+.skill__option {
+    background: #0F172A;
+    color: #F8FAFC;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.skill__option:hover,
+.skill__option--is-focused {
+    background: #1E293B !important;
+    color: #FFFFFF !important;
+}
+
+.skill__option--is-selected {
+    background: #8B5CF6 !important;
+    color: #FFFFFF !important;
+}
+
+/* Multi Value Chip */
+.skill__multi-value {
+    background: #8B5CF6 !important;
+    border-radius: 20px !important;
+    padding: 2px 6px;
+}
+
+.skill__multi-value__label {
+    color: white !important;
+    font-weight: 500;
+    padding-left: 8px;
+}
+
+/* Remove Button */
+.skill__multi-value__remove {
+    color: white !important;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.skill__multi-value__remove:hover {
+    background: #7C3AED !important;
+    color: white !important;
+}
+
+/* Indicators */
+.skill__dropdown-indicator,
+.skill__clear-indicator {
+    color: #CBD5E1 !important;
+}
+
+.skill__dropdown-indicator:hover,
+.skill__clear-indicator:hover {
+    color: #8B5CF6 !important;
+}
+
+.skill__indicator-separator {
+    background: #334155 !important;
+}
+
+/* No Options */
+.skill__menu-notice {
+    color: #94A3B8 !important;
+    background: #0F172A !important;
+}
+
+/* Create Option */
+.skill__option--is-new {
+    color: #8B5CF6 !important;
+    font-weight: 600;
+}
+
+/* hover background */
+.hover-bg-primary:hover {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+.application-table thead th {
+    color: #212529 !important;
+    font-weight: 600;
 }

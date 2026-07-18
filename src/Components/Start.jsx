@@ -7,8 +7,8 @@ import CompanyDashboard from './CompanyModule/Dashboard'
 const Start = () => {
   return (
     <div>
-      {/* <Home/> */}
-      <CompanyDashboard/>
+      <Home/>
+     
       
       
     </div>

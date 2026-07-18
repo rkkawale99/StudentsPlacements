@@ -1,7 +1,27 @@
 import React, { useEffect, useState } from "react";
+import api from "../../utils/axios";
 
 const ViewApplication = ({ show, setShow, selectedApplication }) => {
   const [closing, setClosing] = useState(false);
+  const [result, setresult] = useState(null);
+
+  const loadResult = async ()=>{
+    try {
+      let res = await api.get(`/placement-results/${selectedApplication?.id}`);
+      console.log(res?.data?.data);
+      if(res === null) return;
+      
+      setresult(res?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    loadResult()
+    console.log(result);
+    
+  }, [selectedApplication])
   
 
   const handleClose = () => {
@@ -44,21 +64,22 @@ const ViewApplication = ({ show, setShow, selectedApplication }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>Company</strong>
-                <p>{selectedApplication?.company}</p>
+                <p>{selectedApplication?.companyName}</p>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Role</strong>
-                <p>{selectedApplication?.role}</p>
+                <p>{selectedApplication?.jobRole}</p>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Applied Date</strong>
-                <p>{selectedApplication?.applied}</p>
+                <p>{selectedApplication?.appliedDate.split("T")[0]}</p>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Status</strong>
+                <br />
                 <span
                   className={`badge bg-${
                     selectedApplication?.status === "Selected"
@@ -78,21 +99,24 @@ const ViewApplication = ({ show, setShow, selectedApplication }) => {
 {/* Use Information from API */}
               <div className="col-md-6 mb-3">
                 <strong>Package</strong>
-                <p>₹12 LPA</p>
+                <p>₹{selectedApplication?.salaryPackage} LPA</p>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Location</strong>
-                <p>Pune</p>
+                <p>{selectedApplication?.location}</p>
+              </div>
+
+              <div className="col-md-6 mb-3" hidden={result ? false : true}>
+                <strong>Joining date</strong>
+                <p>{result?.joiningDate}</p>
               </div>
 
               <div className="col-12">
                 <strong>Job Description</strong>
 
                 <p className="text-muted mt-2">
-                  Develop and maintain enterprise web applications
-                  using Java Spring Boot, React.js and MySQL.
-                  Participate in code reviews, testing and deployment.
+                  {selectedApplication?.des}
                 </p>
               </div>
 
@@ -109,8 +133,11 @@ const ViewApplication = ({ show, setShow, selectedApplication }) => {
               Close
             </button>
 
-            <button className="btn btn-primary">
-              Download Offer
+            <button
+              className="btn btn-secondary"
+              hidden={result ? false : true}
+            >
+              Download Offer letter
             </button>
 
           </div>

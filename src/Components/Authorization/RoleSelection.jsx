@@ -6,22 +6,22 @@ const RoleSelection = () => {
 
   const roles = [
     {
-      title: "Student",
+      title: "STUDENT",
       icon: "bi-mortarboard-fill",
       desc: "Apply for jobs and track placements.",
-      path: "/studentsignup",
+    
     },
     {
-      title: "Company",
+      title: "COMPANY",
       icon: "bi-buildings-fill",
       desc: "Post jobs and hire students.",
-      path: "/companysignup",
+    
     },
     {
-      title: "Admin",
+      title: "ADMIN",
       icon: "bi-shield-lock-fill",
       desc: "Manage the placement portal.",
-      path: "/adminsignup",
+    
     },
   ];
 
@@ -50,7 +50,7 @@ const RoleSelection = () => {
                   cursor: "pointer",
                   transition: ".3s",
                 }}
-                onClick={() => navigate(role.path)}
+                onClick={() => navigate('/register', {state : {role : role.title}})}
               >
 
                 <div

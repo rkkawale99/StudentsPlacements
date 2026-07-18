@@ -11,9 +11,7 @@ export default function FinalResult(){
         </div>
         <div className="card-body">
           <SelectStudents />
-          <hr />
-      
-          <GenerateOfferLetter/>
+
         </div>
       </div>
     </div>

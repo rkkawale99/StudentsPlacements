@@ -1,21 +1,58 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../utils/axios";
 
 
-const stats = [
-  { title: "Active Drives", value: 8, color: "primary" },
-  { title: "Applications", value: 256, color: "success" },
-  { title: "Interviews", value: 42, color: "warning" },
-  { title: "Selected", value: 18, color: "info" },
-];
 
-const drives = [
-  { role: "Java Full Stack Developer", location: "Pune", applicants: 96, status: "Open" },
-  { role: "React Developer", location: "Mumbai", applicants: 58, status: "Open" },
-  { role: "QA Engineer", location: "Bengaluru", applicants: 34, status: "Closing Soon" },
-];
 
 export default function CompanyDashboard() {
+  const [dashboard, setDashboard] = useState({
+    NoOfDrives: 0,
+    NoOfApp: 0,
+    NoOfInterviews: 0,
+    NoOfSelected: 0,
+    jobs: [],
+  });
+  let stats = [
+    {
+      title: "Active Drives",
+      value: dashboard.NoOfDrives,
+      color: "primary",
+    },
+    {
+      title: "Applications",
+      value: dashboard.NoOfApp,
+      color: "success",
+    },
+    {
+      title: "Interviews",
+      value: dashboard.NoOfInterviews,
+      color: "warning",
+    },
+    {
+      title: "Selected",
+      value: dashboard.NoOfSelected,
+      color: "info",
+    },
+  ]
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      const res = await api.get("/companies/dashboard");
+      setDashboard(res.data.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const navigate = useNavigate();
   return (
     <div className="container-fluid py-4 bg">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -23,7 +60,7 @@ export default function CompanyDashboard() {
           <h2 className="fw-bold text-white mb-1">Company Dashboard</h2>
           <p className="text-light mb-0">Welcome back, HR Manager</p>
         </div>
-        <button className="btn btn-primary">+ Create Job</button>
+        <button className="btn btn-primary" onClick={() => navigate("/company/jobs/createJob")}>+ Create Job</button>
       </div>
 
       <div className="row g-4">
@@ -49,23 +86,38 @@ export default function CompanyDashboard() {
                   <tr>
                     <th>Role</th>
                     <th>Location</th>
-                    <th>Applicants</th>
+                    <th>Vacancies</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {drives.map((d) => (
-                    <tr key={d.role}>
-                      <td>{d.role}</td>
-                      <td>{d.location}</td>
-                      <td>{d.applicants}</td>
-                      <td>
-                        <span className={`badge ${d.status==="Open"?"bg-success":"bg-warning text-dark"}`}>
-                          {d.status}
-                        </span>
+                  {dashboard.jobs.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center py-4">
+                        No Job Drives Available
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    dashboard.jobs.map((job) => (
+                      <tr key={job.id}>
+                        <td>{job.jobRole}</td>
+                        <td>{job.location}</td>
+                        <td>{job.vacancies}</td>
+                        <td>
+                          <span
+                            className={`badge ${job.status === "OPEN"
+                                ? "bg-success"
+                                : job.status === "DRAFT"
+                                  ? "bg-warning text-dark"
+                                  : "bg-danger"
+                              }`}
+                          >
+                            {job.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -76,10 +128,10 @@ export default function CompanyDashboard() {
           <div className="card border-0 shadow">
             <div className="card-header bg-secondary fw-bold">Quick Actions</div>
             <div className="list-group list-group-flush">
-              <button className="list-group-item list-group-item-action">Create New Job</button>
-              <button className="list-group-item list-group-item-action">View Applicants</button>
-              <button className="list-group-item list-group-item-action">Schedule Interviews</button>
-              <button className="list-group-item list-group-item-action">Upload Offer Letter</button>
+              <button className="list-group-item list-group-item-action" onClick={() => navigate('/company/jobs/createJob')}>Create New Job</button>
+              <button className="list-group-item list-group-item-action" onClick={() => navigate('/company/jobs/applications')}>View Applicants</button>
+              <button className="list-group-item list-group-item-action" onClick={() => navigate('/company/interview')}>Schedule Interviews</button>
+              <button className="list-group-item list-group-item-action" onClick={() => navigate('/company/result')}>Upload Offer Letter</button>
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { validateEmail, validatePassword } from "../../utils/Authentication";
 import Top from "../Popups/Top";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import api from "../../utils/axios.js"
+import ForgotPasswordModal from "./ForgotPasswordModal.jsx";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,9 +12,14 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [showForgot, setShowForgot] = useState(false);
    const [errors, setErrors] = useState({});
     const [show, setShow] = useState(false)
     const [shake, setshake] = useState(false)
+    const [top, settop] = useState({
+      title : "",
+      msg : ""
+    })
     const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -44,25 +51,62 @@ const Login = () => {
     });
   };
 
-  useEffect(() => {
-    if(show === false && credentials.email !== ""){
-      // login logic *****
-      navigate("/student/dashboard")
-    }
-  }, [show])
   
-  const handleSubmit = (e) => {
-    e.preventDefault();    
-    if(Object.keys(errors).length === 0){
-      console.log("login");
-      setShow(true)
-      return
-    }
-    setshake(true)
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  if (Object.keys(errors).length !== 0) {
+    setshake(true);
+    return;
+  }
+
+  try {
+    localStorage.removeItem("token");
+   const response = await api.post("/auth/login", credentials);
+
+    console.log(response.data);
+
+    let {token, role} = response.data.data;
+
+    // Save token/user if returned by backend
+    if (token) {
+      localStorage.setItem("token", token);
+    }
+    settop({title : "Welcome Back", msg : "Explore The placement portal"});
+    setShow(true);
+
+    setTimeout(() => {
+        setShow(false);
+        if(role === "STUDENT")  navigate("/student/dashboard");
+        else if(role === "COMPANY") navigate("/company/dashboard");
+        else if(role === "ADMIN") navigate("/admin/dashboard");
+        else navigate("/login")
     
-    console.log(credentials);
-  };
+  }, 1500);
+
+  } catch (error) {
+    console.error(error);
+
+    if (error.response) {
+       settop({title : "Login Failed", msg : error.response.data.message || "Invalid email or password"});
+        setShow(true);
+      
+    } else {
+      settop({title : "Login Failed", msg : "Unable to connect to server."});
+        setShow(true);
+    }
+   
+  }
+  finally{
+     setTimeout(() => {
+      setShow(false)
+    }, 1500);
+    setCredentials({
+    email: "",
+    password: "",
+  })
+  }
+};
 
   return (
     <div className="bg-dark min-vh-100 d-flex align-items-center justify-content-center">
@@ -72,7 +116,7 @@ const Login = () => {
 
             <div className="card bg-secondary border-0 shadow-lg rounded-4">
               <div className="card-body p-5">
-                <Top show={show} setShow={setShow} title={"Welcome Back"} msg={"Explore The placement portal"}/>
+                <Top show={show} setShow={setShow} title={top.title} msg={top.msg}/>
 
                 <div className="text-center mb-4">
                   <div
@@ -124,13 +168,18 @@ const Login = () => {
                         Password
                       </label>
 
-                      <a
-                        href="#"
+                      <Link
+                      hidden
+                      onClick={() => setShowForgot(true)}
                         className="text-primary text-decoration-none small"
                       >
                         Forgot Password?
-                      </a>
+                      </Link>
                     </div>
+                     <ForgotPasswordModal
+                show={showForgot}
+                handleClose={() => setShowForgot(false)}
+            />
 
                     <div className="input-group">
 
@@ -180,12 +229,12 @@ const Login = () => {
                     <span className="text-light opacity-75">
                       Don't have an account?
                     </span>{" "}
-                    <a
-                      href="/role"
+                    <Link
+                      to="/role"
                       className="text-primary text-decoration-none fw-semibold"
                     >
                       Register
-                    </a>
+                    </Link>
                   </div>
 
                 </form>
