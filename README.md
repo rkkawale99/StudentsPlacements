@@ -43,8 +43,6 @@ A modern **React + Vite** based frontend for the **Student Placement Management 
 - Manage Students
 - Manage Companies
 - Manage Departments
-- Verify Profiles
-- Approve Companies
 - Announcements
 - Monitor Placement Statistics
 
@@ -63,25 +61,6 @@ A modern **React + Vite** based frontend for the **Student Placement Management 
 
 ---
 
-## 📂 Project Structure
-
-```
-src/
-│
-├── assets/
-├── components/
-├── context/
-├── layouts/
-├── pages/
-│   ├── admin/
-│   ├── company/
-│   ├── student/
-│   └── auth/
-├── services/
-├── utils/
-├── App.jsx
-└── main.jsx
-```
 
 ---
 
